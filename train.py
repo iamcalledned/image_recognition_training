@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.optim as optim
 import torch.nn as nn
@@ -26,4 +27,6 @@ def train_model(trainloader, epochs=2):
     return net
 
 def save_model(net, path='./models/cnn_model.pth'):
+    # Ensure the directory exists
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     torch.save(net.state_dict(), path)

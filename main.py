@@ -1,6 +1,6 @@
 from utils import load_data
 from train import train_model, save_model
-from evaluate import load_model, evaluate_model, predict_images
+from evaluate import load_model, evaluate_model, predict_images, visualize_misclassifications
 
 def main():
     # Load data
@@ -20,6 +20,9 @@ def main():
 
     # Predict new images
     predict_images(net, testloader, classes)
+
+    # Visualize misclassifications
+    visualize_misclassifications(net, testloader, classes)
 
 if __name__ == "__main__":
     main()
