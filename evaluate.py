@@ -31,3 +31,4 @@ def predict_images(net, testloader, classes):
     _, predicted = torch.max(outputs, 1)
 
     print('Predicted: ', ' '.join(f'{classes[predicted[j]]}' for j in range(4)))
+

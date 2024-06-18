@@ -1,5 +1,6 @@
 import torch
 import torch.optim as optim
+import torch.nn as nn
 from model import Net
 
 def train_model(trainloader, epochs=2):

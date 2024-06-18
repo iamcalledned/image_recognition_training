@@ -1,6 +1,8 @@
 import torch
 import torchvision
 import torchvision.transforms as transforms
+import matplotlib.pyplot as plt
+import numpy as np
 
 def load_data(batch_size=4, data_root='/mnt/storage'):
     transform = transforms.Compose(
