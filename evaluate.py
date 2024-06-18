@@ -1,4 +1,5 @@
 import torch
+import torchvision
 from model import Net
 from utils import imshow
 
@@ -22,7 +23,7 @@ def evaluate_model(net, testloader, classes):
 
 def predict_images(net, testloader, classes):
     dataiter = iter(testloader)
-    images, labels = dataiter.next()
+    images, labels = next(dataiter)  # Use next() function to get the next item from the iterator
 
     imshow(torchvision.utils.make_grid(images))
     print('GroundTruth: ', ' '.join(f'{classes[labels[j]]}' for j in range(4)))
