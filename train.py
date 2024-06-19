@@ -1,9 +1,11 @@
 import os
+import time
 import torch
 import torch.optim as optim
 import torch.nn as nn
 from torch.cuda.amp import GradScaler, autocast
 from model import Net
+from tqdm import tqdm
 
 def train_model(trainloader, epochs=25):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -15,10 +17,12 @@ def train_model(trainloader, epochs=25):
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
     scaler = GradScaler()  # For mixed precision training
 
+    start_time = time.time()
+
     for epoch in range(epochs):
         running_loss = 0.0
         print(f"Epoch {epoch + 1}/{epochs}")
-        for i, data in enumerate(trainloader, 0):
+        for i, data in enumerate(tqdm(trainloader, desc="Training", leave=False)):
             inputs, labels = data
             inputs, labels = inputs.to(device), labels.to(device)  # Move inputs and labels to the device
             optimizer.zero_grad()
@@ -37,7 +41,9 @@ def train_model(trainloader, epochs=25):
                 running_loss = 0.0
         scheduler.step()
 
-    print('Finished Training')
+    end_time = time.time()
+    total_time = end_time - start_time
+    print(f'Finished Training. Total time: {total_time:.2f} seconds')
     return net
 
 def save_model(net, path='./models/cnn_model.pth'):
