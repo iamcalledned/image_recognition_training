@@ -1,3 +1,8 @@
+import torch.multiprocessing as mp
+
+# Set the multiprocessing sharing strategy
+mp.set_sharing_strategy('file_system')
+
 from utils import load_data
 from train import train_model, save_model
 from evaluate import load_model, evaluate_model, predict_images, visualize_misclassifications
