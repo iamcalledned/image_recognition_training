@@ -1,6 +1,8 @@
+import os
 import torch
 import torch.optim as optim
 import torch.nn as nn
+from torch.cuda.amp import GradScaler, autocast
 from model import Net
 
 def train_model(trainloader, epochs=25):
@@ -9,6 +11,7 @@ def train_model(trainloader, epochs=25):
     criterion = nn.CrossEntropyLoss().to(device)
     optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
+    scaler = GradScaler()  # For mixed precision training
 
     for epoch in range(epochs):
         running_loss = 0.0
@@ -16,10 +19,15 @@ def train_model(trainloader, epochs=25):
             inputs, labels = data
             inputs, labels = inputs.to(device), labels.to(device)  # Move inputs and labels to the device
             optimizer.zero_grad()
-            outputs = net(inputs)
-            loss = criterion(outputs, labels)
-            loss.backward()
-            optimizer.step()
+            
+            with autocast():  # Use mixed precision
+                outputs = net(inputs)
+                loss = criterion(outputs, labels)
+            
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
+            
             running_loss += loss.item()
             if i % 2000 == 1999:
                 print(f'[{epoch + 1}, {i + 1}] loss: {running_loss / 2000:.3f}')

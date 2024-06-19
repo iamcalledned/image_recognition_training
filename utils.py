@@ -19,11 +19,11 @@ def load_data(batch_size=4, data_root='/mnt/storage'):
 
     # Download and load the training set
     trainset = torchvision.datasets.CIFAR10(root=data_root, train=True, download=True, transform=transform_train)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=2)
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=4)
 
     # Download and load the test set
     testset = torchvision.datasets.CIFAR10(root=data_root, train=False, download=True, transform=transform_test)
-    testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False, num_workers=2)
+    testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False, num_workers=4)
 
     classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
     return trainloader, testloader, classes

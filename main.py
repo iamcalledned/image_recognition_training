@@ -4,7 +4,7 @@ from evaluate import load_model, evaluate_model, predict_images, visualize_miscl
 
 def main():
     # Load data
-    trainloader, testloader, classes = load_data(data_root='/mnt/storage')
+    trainloader, testloader, classes = load_data(batch_size=64, data_root='/mnt/storage')  # Increase batch size
 
     # Train model
     net = train_model(trainloader, epochs=25)
