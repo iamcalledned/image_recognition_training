@@ -4,8 +4,9 @@ import torch.nn as nn
 from model import Net
 
 def train_model(trainloader, epochs=25):
-    net = Net()
-    criterion = nn.CrossEntropyLoss()
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    net = Net().to(device)
+    criterion = nn.CrossEntropyLoss().to(device)
     optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
@@ -13,6 +14,7 @@ def train_model(trainloader, epochs=25):
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
             inputs, labels = data
+            inputs, labels = inputs.to(device), labels.to(device)  # Move inputs and labels to the device
             optimizer.zero_grad()
             outputs = net(inputs)
             loss = criterion(outputs, labels)
