@@ -7,6 +7,8 @@ from model import Net
 
 def train_model(trainloader, epochs=25):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device}")
+    
     net = Net().to(device)
     criterion = nn.CrossEntropyLoss().to(device)
     optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
@@ -15,6 +17,7 @@ def train_model(trainloader, epochs=25):
 
     for epoch in range(epochs):
         running_loss = 0.0
+        print(f"Epoch {epoch + 1}/{epochs}")
         for i, data in enumerate(trainloader, 0):
             inputs, labels = data
             inputs, labels = inputs.to(device), labels.to(device)  # Move inputs and labels to the device
