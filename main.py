@@ -1,8 +1,3 @@
-import torch.multiprocessing as mp
-
-# Set the multiprocessing sharing strategy
-mp.set_sharing_strategy('file_system')
-
 from utils import load_data
 from train import train_model, save_model
 from evaluate import load_model, evaluate_model, predict_images, visualize_misclassifications
@@ -12,7 +7,7 @@ def main():
     trainloader, testloader, classes = load_data(data_root='/mnt/storage')
 
     # Train model
-    net = train_model(trainloader)
+    net = train_model(trainloader, epochs=25)
 
     # Save model
     save_model(net)
